@@ -10,20 +10,37 @@ Goal may be either a "home goal" or an "away goal".
 
 Your task is to sum the goals and print out a final score.
 
-##Suggestions
-You may model this any way you wish.
-E.g.  A list of Strings, Am array of Integers, a stream of Case Classes.
-
-The list may be created from the command line, a file or hard-coded.
-
-The main logic may optionally validate if the list is correctly structured (i.e. begins with Kick off and ends with Final Whistle).
-
 You may optionally include tests.
 
-##Example
+##Input
+The input is a ```List``` of ```String```s where each String is one of the following:
+* Kickoff
+* GoalHome
+* GoalAway
+* FinalWhistle
+
+Your program should reject errors in your lists.
+
 ```scala
-val list = List("Kickoff", "Goalhome", "GoalAway", "Final Whistle")
-validate(list)
-val output = sumGoals(list)
-println (output)
+val validList         = List("Kickoff", "Goalhome", "GoalAway", "Goalhome", "Goalhome", "Final Whistle")
+
+val noKickoffElement  = List("Goalhome", "Goalaway", "Final Whistle")
+
+val typos             = List("KICKOFF", "GOALAWAY", "GOALHOME", "FINAL WHISTLE")
+
+val noFinalWhistle    = List("Kickoff", "Goalhome", "Goalhome")
+```
+
+Feel free to hardcode your input lists in your solution.
+
+##Output
+Given the above examples, the output should be:
+```
+3-1
+
+Invalid
+
+Invalid
+
+Invalid
 ```
