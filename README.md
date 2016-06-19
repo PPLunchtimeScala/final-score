@@ -22,13 +22,13 @@ The input is a ```List``` of ```String```s where each String is one of the follo
 Your program should reject errors in your lists.
 
 ```scala
-val valid-list         = List("Kickoff", "Goalhome", "GoalAway", "Goalhome", Goalhome", "Final Whistle")
+val validList         = List("Kickoff", "Goalhome", "GoalAway", "Goalhome", "Goalhome", "Final Whistle")
 
-val no-kickoff-element = List("Goalhome", "Goalaway", "Final Whistle")
+val noKickoffElement  = List("Goalhome", "Goalaway", "Final Whistle")
 
-val typos              = List("KICKOFF", "GOALAWAY", "GOALHOME", "FINAL WHISTLE")
+val typos             = List("KICKOFF", "GOALAWAY", "GOALHOME", "FINAL WHISTLE")
 
-val no-final-whistle   = List("Kickoff", "Goalhome", "Goalhome")
+val noFinalWhistle    = List("Kickoff", "Goalhome", "Goalhome")
 ```
 
 Feel free to hardcode your input lists in your solution.
