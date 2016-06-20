@@ -11,6 +11,11 @@ resolvers ++= Seq(
   Resolver.sonatypeRepo("releases")
 )
 
+
+libraryDependencies += "co.fs2" % "fs2-core_2.11" % "0.9.0-M3"
+
+
+
 val scalacheck = Seq(
     "org.scalacheck" %% "scalacheck" % "1.12.2"
 )
@@ -34,11 +39,17 @@ val scalaz = Seq(
   "org.scalaz.stream" %% "scalaz-stream" % scalazStreamV
 )
 
-libraryDependencies ++= scalacheck ++ scalatest ++ scalaz
+val fs2 = Seq(
+  "co.fs2" % "fs2-core_2.11" % "0.9.0-M3",
+  "co.fs2" % "fs2-io_2.11" % "0.9.0-M3"
+)
+
+libraryDependencies ++= scalacheck ++ scalatest ++ scalaz ++ fs2
 
 initialCommands in console := """
     |import scalaz._
     |import Scalaz._
     |import scalaz.concurrent.Task
     |import scala.concurrent.duration._
+    |import fs2._
     |""".stripMargin
