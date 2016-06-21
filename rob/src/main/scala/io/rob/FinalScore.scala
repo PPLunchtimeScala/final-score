@@ -10,27 +10,27 @@ object FinalScore {
 
   private def getScore(incidents: List[Incident], score: Score): Try[Score] = {
     incidents match {
-      case Nil => Failure(new IllegalArgumentException("Last element should be Final Whistle"))
-      case Goal(Home) :: t => getScore(t, Score(score.home + 1, score.away))
-      case Goal(Away) :: t => getScore(t, Score(score.home, score.away + 1))
+      case Nil                 => Failure(new IllegalArgumentException("Last element should be Final Whistle"))
+      case Goal(Home) :: t     => getScore(t, Score(score.home + 1, score.away))
+      case Goal(Away) :: t     => getScore(t, Score(score.home, score.away + 1))
       case FinalWhistle :: Nil => Success(score)
-      case unexpected :: _ => Failure(new IllegalArgumentException(s"Expected Goal instead of $unexpected"))
+      case unexpected :: _     => Failure(new IllegalArgumentException(s"Expected Goal instead of $unexpected"))
     }
   }
 
   private def toIncident(str: String): Try[Incident] = {
     str match {
-      case "KickOff" => Success(KickOff)
-      case "GoalHome" => Success(Goal(Home))
-      case "GoalAway" => Success(Goal(Away))
+      case "KickOff"      => Success(KickOff)
+      case "GoalHome"     => Success(Goal(Home))
+      case "GoalAway"     => Success(Goal(Away))
       case "FinalWhistle" => Success(FinalWhistle)
-      case unknown => Failure(new IllegalArgumentException(s"Failed to match $unknown to a known incident type"))
+      case unknown        => Failure(new IllegalArgumentException(s"Failed to match $unknown to a known incident type"))
     }
   }
 
   private def sequence[A](as: List[Try[A]]): Try[List[A]] = {
     as match {
-      case Nil => Success(Nil)
+      case Nil    => Success(Nil)
       case h :: t => h flatMap { hh => sequence(t) map { hh :: _ } }
     }
   }
