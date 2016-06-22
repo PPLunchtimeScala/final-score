@@ -100,7 +100,7 @@ object FinalScore2 {
   def process(events: List[String]): String = {
     def go(e: List[String], result: Result): Result = e match {
       case Nil => result
-      case x :: xs => go(xs, rule(result, x))
+      case x :: xs => go(xs, rule((result, x))
     }
     go(events, validate(events)).show
   }
@@ -126,14 +126,13 @@ object FinalScore2 {
 
 object FinalScore3 {
 
-  def process(events: List[String]): String = {
-    events.foldLeft(validate(events))((r, e) => r.process(e)).show
-  }
+  def process(events: List[String]): String = sum(events).show
 
-  def validate(events: List[String]): Result = {
-    if(events.head != startGame) Invalid
-    else if(events.last != endGame) Invalid
-    else Score()
+  def sum(l: List[String], result: Result = Score(), idx: Int = 0): Result = l match {
+    case x :: Nil if x != `endGame` => Invalid
+    case x :: xs if idx == 0 && x != `startGame` => Invalid
+    case Nil => result
+    case x :: xs => sum(xs, result.process(x), idx + 1)
   }
 
 }
