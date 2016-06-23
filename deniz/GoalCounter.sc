@@ -3,58 +3,45 @@ object GameState extends Enumeration {
   val PreMatch, Running, Ended = Value
 }
 
-def count(gameEvents:List[String]):Tuple2[Int,Int] = {
+def count(gameEvents:List[String]):Option[Tuple2[Int,Int]] = {
 
-  def countGoals(events:List[String], currentState:GameState.state):Tuple2[Int,Int] = events match {
-    case Nil =>
-      if (currentState != GameState.Ended) throw new Error("Stop the game, please!")
-      else (0, 0)
+  def countGoals(events:List[String], currentState:GameState.state, home:Int, away:Int):Option[Tuple2[Int,Int]] = events match {
+    case Nil =>  
+      if (currentState != GameState.Ended) None
+      else Some(Tuple2(home, away))
 
     case x :: xs => x match {
 
       case "Goalhome" =>
-        if (currentState != GameState.Running) throw new Error("No Kickoff")
-        else {
-          val t = countGoals(xs, GameState.Running)
-          (t._1 + 1, t._2)
-        }
+        if (currentState != GameState.Running) None
+        else countGoals(xs, GameState.Running, home+1, away)
 
       case "GoalAway" =>
-        if (currentState != GameState.Running) throw new Error("No Kickoff")
-        else {
-          val t = countGoals(xs, GameState.Running)
-          (t._1, t._2+1)
-        }
+        if (currentState != GameState.Running) None
+        else countGoals(xs, GameState.Running, home, away+1)
 
       case "Kickoff" =>
-        if (currentState != GameState.PreMatch) throw new Error("How you can start that game")
-        else {
-          countGoals(xs, GameState.Running)
-        }
+        if (currentState != GameState.PreMatch) None
+        else countGoals(xs, GameState.Running, home, away)
 
       case "Final Whistle" =>
-        if (currentState != GameState.Running) throw new Error("You cannot end a non-running game")
-        else {
-          countGoals(xs, GameState.Ended)
-        }
+        if (currentState != GameState.Running) None
+        else countGoals(xs, GameState.Ended, home, away)
+
+      case _ => None
     }
   }
   
-  countGoals(gameEvents, GameState.PreMatch)
+  countGoals(gameEvents, GameState.PreMatch, 0, 0)
 }
 
 
 def RunGame(gameEvents:List[String]): Unit = {
-  try {
-    count(gameEvents) match {
-      case (home, away) => println(home + " - " + away)
-    }
-  }
-  catch {
-    case err:Error => println("Invalid : Reason " + err.getMessage)
-    case x:Throwable => println("Invalid : Reason " + x.getMessage)
-  }
   
+    count(gameEvents) match {
+      case Some(Tuple2(home, away)) => println(home + " - " + away)
+      case None => println("Invalid")
+    }
 }
 
 val validList                 = List("Kickoff", "Goalhome", "GoalAway", "Goalhome", "Goalhome", "Final Whistle")
@@ -65,11 +52,13 @@ val typos                     = List("KICKOFF", "GOALAWAY", "GOALHOME", "FINAL W
 val noFinalWhistle            = List("Kickoff", "Goalhome", "Goalhome")
 val goalAfterWhistle          = List("Kickoff", "Goalhome", "Final Whistle", "Goalhome")
 val goalAfterSecondKickOff    = List("Kickoff", "Goalhome", "Kickoff", "Goalhome", "Final Whistle")
+val emptyList                 = List()
 
-println(RunGame(validList))
-println(RunGame(validListNoGoal))
-println(RunGame(validListNonNilDraw))
-println(RunGame(noKickoffElement))
-println(RunGame(typos))
-println(RunGame(noFinalWhistle))
-println(RunGame(goalAfterSecondKickOff))
+RunGame(validList)
+RunGame(validListNoGoal)
+RunGame(validListNonNilDraw)
+RunGame(noKickoffElement)
+RunGame(typos)
+RunGame(noFinalWhistle)
+RunGame(goalAfterSecondKickOff)
+RunGame(emptyList)
