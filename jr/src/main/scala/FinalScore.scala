@@ -11,8 +11,9 @@ object FinalScore {
   }
 
   def processMatchEvents(matchEvents: List[String]): MatchScore = {
-    if (isMatchEventListValid(matchEvents.map(_.toUpperCase()))) {
-      calculateScore(matchEvents.map(_.toUpperCase()))
+    val upperEvents=matchEvents.map(_.toUpperCase())
+    if (isMatchEventListValid(upperEvents)) {
+      calculateScore(upperEvents)
     } else {
       throw sys.error("Unsupported match event detected")
     }
