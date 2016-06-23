@@ -1,7 +1,13 @@
 object FinalScore {
 
+/*
+   Assumptions: Valid list will always start with "KICKOFF" and terminate with "FINAL WHISTLE"
+                Only other valid items in list are "GOALAWAY", "GOALHOME"
+                Case insensitive
+ */
+
   class MatchScore(val homeScore: Int, val awayScore: Int) {
-    override def toString(): String = "Home Score: " + homeScore + ", Away Score:" + awayScore + ")";
+    override def toString(): String = "(Home Score: " + homeScore + ", Away Score:" + awayScore + ")";
   }
 
   def processMatchEvents(matchEvents: List[String]): MatchScore = {
